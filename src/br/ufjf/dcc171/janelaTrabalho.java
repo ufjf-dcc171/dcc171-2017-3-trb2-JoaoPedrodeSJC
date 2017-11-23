@@ -42,6 +42,7 @@ public class janelaTrabalho extends JFrame {
     private final JButton adicionar = new JButton("Adicionar");
     private final JButton voltar = new JButton("Voltar");
     private final JButton finalizar = new JButton("Finalizar");
+    private final String mesa;
     
     private JLabel imagens = new JLabel();
     private JLabel preco = new JLabel();
@@ -53,8 +54,9 @@ public class janelaTrabalho extends JFrame {
 
     
     public janelaTrabalho(List<Tipo> sampleData, int numMesa) {
-        
         super("mesa " + numMesa);
+        mesa = "mesa " + numMesa;
+        
         setMinimumSize(new Dimension(610, 300));
         
         JPanel formulario = new JPanel();
@@ -75,8 +77,8 @@ public class janelaTrabalho extends JFrame {
         imagens.setIcon(icone1);
         formulario.add(imagens); 
         
-        Object[] titulos = new Object[]{"Nome", "Preço"};
-        Object[][] dados = new Object[][]{{"Total", "0,00"}};
+        Object[] titulos = new Object[]{"Nome","Qtd", "Preço"};
+        Object[][] dados = new Object[][]{{"Total","0", "0,00"}};
         comprados = new JTable(new DefaultTableModel(dados, titulos));
         eastPane = new JScrollPane(comprados);
         
@@ -150,7 +152,7 @@ public class janelaTrabalho extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Comida selecionada = lstComidas.getSelectedValue();
                 DefaultTableModel modelo = (DefaultTableModel)comprados.getModel();
-                
+                int quantidade;
                 if(selecionada!=null)
                 {  
                     valor+= Double.parseDouble(selecionada.getPreco());
@@ -165,16 +167,22 @@ public class janelaTrabalho extends JFrame {
                     }
                     if(existe >0)
                     {
-                        Double aux = Double.parseDouble( (String)modelo.getValueAt(existe, 1) ) + Double.parseDouble(selecionada.getPreco());
+                        quantidade = Integer.parseInt((String) (modelo.getValueAt(existe, 1) + ""));
+                        quantidade++;
+                        Double aux = Double.parseDouble( (String)modelo.getValueAt(existe, 2) ) + Double.parseDouble(selecionada.getPreco());
                         String aux2 = aux +"";
-                        modelo.setValueAt(aux2, existe, 1);
+                        modelo.setValueAt(quantidade, existe, 1);
+                        modelo.setValueAt(aux2, existe, 2);
                     }
                     else
                     {
-                        modelo.addRow(new Object[]{selecionada.getNome(),selecionada.getPreco()});
+                        modelo.addRow(new Object[]{selecionada.getNome(),1,selecionada.getPreco()});
                         
                     }
-                    modelo.setValueAt(valor, 0, 1);
+                    modelo.setValueAt(valor, 0, 2);
+                    quantidade = Integer.parseInt((String) (modelo.getValueAt(0, 1) + ""));
+                    quantidade++;
+                    modelo.setValueAt(quantidade, 0, 1);
                     validate();repaint();
                     
                     if(inicio.getText().equals("-:--"))
@@ -206,15 +214,25 @@ public class janelaTrabalho extends JFrame {
                 
                 if(valor>0.0)
                 {
+
                     Date date = new Date();
                     DateFormat formato = new SimpleDateFormat("HH:mm");
                     String formattedDate = formato.format(date);
 
-                    DefaultTableModel modelo = (DefaultTableModel)comprados.getModel();                
+                    DefaultTableModel modelo = (DefaultTableModel)comprados.getModel();
+                    
+                    for (int i = 1; i < modelo.getRowCount(); i++)
+                    {
+                        for (int j = 0; j < 3; j++) {
+                            modelo.getValueAt(i,j);
+                        }
+                        
+                    }
                     JOptionPane.showMessageDialog(null, "O valor a ser pago é: " + valor,"Inicio atd: " + inicio.getText() + " fim: " + formattedDate ,JOptionPane.INFORMATION_MESSAGE);
                     valor = 0;
                     inicio.setText("-:--");
-                    modelo.setValueAt(valor, 0, 1);
+                    modelo.setValueAt(valor, 0, 2);
+                    modelo.setValueAt(0, 0, 1);
                     modelo.setRowCount(1);
                     validate();repaint();
                 }
