@@ -5,11 +5,17 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
@@ -214,27 +220,35 @@ public class janelaTrabalho extends JFrame {
                 
                 if(valor>0.0)
                 {
-
-                    Date date = new Date();
-                    DateFormat formato = new SimpleDateFormat("HH:mm");
-                    String formattedDate = formato.format(date);
-
-                    DefaultTableModel modelo = (DefaultTableModel)comprados.getModel();
-                    
-                    for (int i = 1; i < modelo.getRowCount(); i++)
-                    {
-                        for (int j = 0; j < 3; j++) {
-                            modelo.getValueAt(i,j);
-                        }
+                    try {
+                        Date date = new Date();
+                        DateFormat formato = new SimpleDateFormat("HH:mm");
+                        String formattedDate = formato.format(date);
+                        DefaultTableModel modelo = (DefaultTableModel)comprados.getModel();
+                        Formatter output;
+                        FileWriter fileWriter = new FileWriter(mesa, true);
+                        output = new Formatter(fileWriter);
                         
+                        for (int i = 1; i < modelo.getRowCount(); i++)
+                        {
+                            for (int j = 0; j < 3; j++) {
+                                
+                                output.format("%s", modelo.getValueAt(i, j) + " ");
+                            }
+                            output.format("%c",'\n');
+                        }
+                        output.close();
+                        
+                        JOptionPane.showMessageDialog(null, "O valor a ser pago é: " + valor,"Inicio atd: " + inicio.getText() + " fim: " + formattedDate ,JOptionPane.INFORMATION_MESSAGE);
+                        valor = 0;
+                        inicio.setText("-:--");
+                        modelo.setValueAt(valor, 0, 2);
+                        modelo.setValueAt(0, 0, 1);
+                        modelo.setRowCount(1);
+                        validate();repaint();
+                    } catch (Exception ex) {
+                        Logger.getLogger(janelaTrabalho.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    JOptionPane.showMessageDialog(null, "O valor a ser pago é: " + valor,"Inicio atd: " + inicio.getText() + " fim: " + formattedDate ,JOptionPane.INFORMATION_MESSAGE);
-                    valor = 0;
-                    inicio.setText("-:--");
-                    modelo.setValueAt(valor, 0, 2);
-                    modelo.setValueAt(0, 0, 1);
-                    modelo.setRowCount(1);
-                    validate();repaint();
                 }
             }
         });

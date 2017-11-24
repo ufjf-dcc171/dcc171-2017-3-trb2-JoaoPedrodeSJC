@@ -5,6 +5,8 @@
  */
 package br.ufjf.dcc171;
 
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author John
@@ -29,33 +31,24 @@ public class InterfaceAtendente extends javax.swing.JFrame {
 
         jComboBox1 = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        Object[] titulos = new Object[]{"Nome","Qtd","Total", "Estado"};
+        tblPedidos = new javax.swing.JTable();
+        btnFechar = new javax.swing.JButton();
+        btnRemover = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Nome", "Qtd", "Total", "Estado"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        tblPedidos.setModel(new DefaultTableModel(titulos, 0));
+        jScrollPane1.setViewportView(tblPedidos);
 
-        jButton1.setText("Fechar");
+        btnFechar.setText("Fechar");
 
-        jButton2.setText("Remover");
+        btnRemover.setText("Remover");
 
-        jButton3.setText("Cancelar");
+        btnCancelar.setText("Cancelar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -67,11 +60,11 @@ public class InterfaceAtendente extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)
+                        .addComponent(btnFechar)
                         .addGap(26, 26, 26)
-                        .addComponent(jButton2)
+                        .addComponent(btnRemover)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3))
+                        .addComponent(btnCancelar))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
@@ -81,9 +74,9 @@ public class InterfaceAtendente extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(btnFechar)
+                    .addComponent(btnRemover)
+                    .addComponent(btnCancelar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -128,11 +121,11 @@ public class InterfaceAtendente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnFechar;
+    private javax.swing.JButton btnRemover;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblPedidos;
     // End of variables declaration//GEN-END:variables
 }
