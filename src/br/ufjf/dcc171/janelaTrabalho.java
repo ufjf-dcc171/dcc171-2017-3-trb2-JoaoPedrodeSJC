@@ -5,23 +5,20 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.FileWriter;
-import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -30,7 +27,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -228,17 +224,40 @@ public class janelaTrabalho extends JFrame {
                         Formatter output;
                         FileWriter fileWriter = new FileWriter(mesa, true);
                         output = new Formatter(fileWriter);
-                        
-                        for (int i = 1; i < modelo.getRowCount(); i++)
+                        Scanner input = new Scanner(new File(mesa));
+                        if(input.hasNext())
                         {
-                            for (int j = 0; j < 3; j++) {
-                                
-                                output.format("%s", modelo.getValueAt(i, j) + " ");
-                            }
                             output.format("%c",'\n');
                         }
+                        for (int i = 1; i < modelo.getRowCount(); i++)
+                        {
+                                
+                            
+                            String nome = (String) modelo.getValueAt(i, 0);
+                            
+                            double total = Double.parseDouble(modelo.getValueAt(i,2) + "");
+                            
+                            int quantidade = Integer.parseInt(modelo.getValueAt(i, 1)+ "");
+                            
+                            output.format("%s",nome + " ");
+                                    
+                            output.format("%s",quantidade + " ");
+                            
+                            output.format("%s", (total / (double)quantidade) + " ");
+                            
+                            output.format("%s", inicio.getText()  + " ");
+                            
+                            output.format("%s",formattedDate + " ");
+                            
+                            output.format("%s","aberto");
+                            
+                            if(i<( modelo.getRowCount() -1))
+                            {
+                                output.format("%c",'\n');
+                            }
+                        }
                         output.close();
-                        
+                        input.close();
                         JOptionPane.showMessageDialog(null, "O valor a ser pago é: " + valor,"Inicio atd: " + inicio.getText() + " fim: " + formattedDate ,JOptionPane.INFORMATION_MESSAGE);
                         valor = 0;
                         inicio.setText("-:--");

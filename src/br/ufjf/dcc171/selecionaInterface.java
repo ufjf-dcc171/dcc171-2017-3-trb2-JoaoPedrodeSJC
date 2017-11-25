@@ -5,8 +5,15 @@
  */
 package br.ufjf.dcc171;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -20,6 +27,18 @@ public class selecionaInterface extends javax.swing.JFrame {
      */
     public selecionaInterface() {
         initComponents();
+        try {
+            File file = new File("mesas");
+            Scanner input = new Scanner(file);
+            
+            while(input.hasNext())
+            {
+                String mesa = "mesa " + input.nextInt();
+                cbMesa.addItem(mesa);
+            }
+
+            input.close();
+        } catch (Exception ex) {}
     }
 
     /**
@@ -31,19 +50,38 @@ public class selecionaInterface extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton2 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
+        btnSelec = new javax.swing.JButton();
+        cbMesa = new javax.swing.JComboBox<>();
+        btnAdc = new javax.swing.JButton();
+        vtnRmv = new javax.swing.JButton();
+
+        jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton2.setText("Selecionar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnSelec.setText("Selecionar");
+        btnSelec.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnSelecActionPerformed(evt);
             }
         });
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbMesa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "atendente" }));
+
+        btnAdc.setText("Adicionar mesa");
+        btnAdc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdcActionPerformed(evt);
+            }
+        });
+
+        vtnRmv.setText("Remover mesa");
+        vtnRmv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vtnRmvActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -52,38 +90,105 @@ public class selecionaInterface extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
-                    .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnSelec, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                    .addComponent(cbMesa, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnAdc, javax.swing.GroupLayout.DEFAULT_SIZE, 122, Short.MAX_VALUE)
+                    .addComponent(vtnRmv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbMesa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnSelec, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnAdc, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(vtnRmv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnSelecActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecActionPerformed
         // TODO add your handling code here:
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
+        String selecionado = (String) cbMesa.getSelectedItem();
+        if(selecionado!="atendente")
+        {
+            int numeroMesa = Integer.parseInt(selecionado.substring(5));
+            janelaTrabalho janela = new janelaTrabalho(getSampleData(), numeroMesa);
+            janela.setSize(500, 300);
+            janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            janela.setLocationRelativeTo(null);
+            janela.setVisible(true);
+            this.setVisible(false);
+        }
+        else
+        {
+            int quantidadeMesa = cbMesa.getItemCount();
+            Object[] mesas = new Object[quantidadeMesa];
+            for (int i = 0; i < cbMesa.getItemCount()-1; i++) {
+                mesas[i] =(String) cbMesa.getItemAt(i+1);
+            }
+            InterfaceAtendente janela = new InterfaceAtendente(mesas,quantidadeMesa-1);
+            janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            janela.setLocationRelativeTo(null);
+            janela.setVisible(true);
+            this.setVisible(false);
+        }
+    }//GEN-LAST:event_btnSelecActionPerformed
+
+    private void btnAdcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdcActionPerformed
+        try {
+            // TODO add your handling code here:
+            int numeroMesa = cbMesa.getItemCount();
+            String nomeMesa = "Mesa " + numeroMesa;
+            cbMesa.addItem(nomeMesa);
+            
+            FileWriter fileWriter = new FileWriter("mesas", true);
+            
+            Formatter output = new Formatter(fileWriter);
+            output.format("%s","\n" + numeroMesa);
+            output.close();
+            
+        } catch (Exception ex) {}
+    }//GEN-LAST:event_btnAdcActionPerformed
+
+    private void vtnRmvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vtnRmvActionPerformed
+        // TODO add your handling code here:
+        if(cbMesa.getItemCount()>2)
+        {
+            try {
+                cbMesa.removeItemAt(cbMesa.getItemCount()-1);
+                Formatter output = new Formatter("mesas");
+                for (int i = 1; i < cbMesa.getItemCount(); i++) {
+                    if(i>1)
+                    {
+                       output.format("%s","\n"); 
+                    }
+                    output.format("%s",i);
+                }
+                
+                output.close();
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(selecionaInterface.class.getName()).log(Level.SEVERE, null, ex);
+            }
+             
+        }
+    }//GEN-LAST:event_vtnRmvActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         
-        janelaTrabalho janela = new janelaTrabalho(getSampleData(), 1);
-        janela.setSize(500, 300);
-        janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        janela.setLocationRelativeTo(null);
-        janela.setVisible(false);
+
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -127,7 +232,10 @@ public class selecionaInterface extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton btnAdc;
+    private javax.swing.JButton btnSelec;
+    private javax.swing.JComboBox<String> cbMesa;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton vtnRmv;
     // End of variables declaration//GEN-END:variables
 }

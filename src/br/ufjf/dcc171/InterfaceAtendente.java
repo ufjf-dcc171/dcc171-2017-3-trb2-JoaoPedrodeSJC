@@ -5,6 +5,10 @@
  */
 package br.ufjf.dcc171;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Formatter;
+import java.util.Scanner;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -16,8 +20,14 @@ public class InterfaceAtendente extends javax.swing.JFrame {
     /**
      * Creates new form InterfaceAtendente
      */
-    public InterfaceAtendente() {
+    private double pago,pagar;
+    public InterfaceAtendente(Object[] mesas, int tamanho) {
         initComponents();
+        for(int i=0;i<tamanho;i++)
+        {
+            cbMesa.addItem((String)mesas[i]);
+        }
+        
     }
 
     /**
@@ -29,26 +39,45 @@ public class InterfaceAtendente extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbMesa = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        Object[] titulos = new Object[]{"Nome","Qtd","Total", "Estado"};
+        Object[] titulos = new Object[]{"Nome","Qtd","Valor","Inicio","Fim", "Estado"};
         tblPedidos = new javax.swing.JTable();
         btnFechar = new javax.swing.JButton();
         btnRemover = new javax.swing.JButton();
-        btnCancelar = new javax.swing.JButton();
+        lblPagar = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        lblPago = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbMesa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbMesaActionPerformed(evt);
+            }
+        });
 
         tblPedidos.setModel(new DefaultTableModel(titulos, 0));
         jScrollPane1.setViewportView(tblPedidos);
 
         btnFechar.setText("Fechar");
+        btnFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFecharActionPerformed(evt);
+            }
+        });
 
         btnRemover.setText("Remover");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
 
-        btnCancelar.setText("Cancelar");
+        jLabel1.setText("Total a pagar:");
+
+        jLabel3.setText("Total pago:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -57,75 +86,196 @@ public class InterfaceAtendente extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnFechar)
-                        .addGap(26, 26, 26)
-                        .addComponent(btnRemover)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnCancelar))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(15, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblPago, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cbMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(142, 142, 142)
+                                .addComponent(btnFechar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnRemover)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbMesa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnFechar)
-                    .addComponent(btnRemover)
-                    .addComponent(btnCancelar))
+                    .addComponent(btnRemover))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblPagar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel3)
+                        .addComponent(lblPago, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
+        // TODO add your handling code here:
+        try
+        {
+            String mesa = (String) cbMesa.getSelectedItem();
+            DefaultTableModel modelo = (DefaultTableModel)tblPedidos.getModel();
+            String estado = (String)modelo.getValueAt(tblPedidos.getSelectedRow(), 5);
+            
+            if( estado.equals("aberto") )
+            {
+                int quantidade = Integer.parseInt( modelo.getValueAt( tblPedidos.getSelectedRow(), 1)+"");
+                double valor =Double.parseDouble(  modelo.getValueAt( tblPedidos.getSelectedRow(), 2)+"");
+                pagar-= (valor*quantidade);
+                pago+=(valor*quantidade);
+                lblPago.setText(pago+"");
+                lblPagar.setText(pagar+"");
+                
+                modelo.setValueAt("Fechado",  tblPedidos.getSelectedRow(), 5);
+
+                Formatter output = new Formatter(mesa);
+
+                for (int i = 0; i < modelo.getRowCount(); i++)
+                {
+                    for (int j = 0; j < modelo.getColumnCount(); j++) {
+
+                        output.format("%s", modelo.getValueAt(i, j));
+
+                        if(j<(modelo.getColumnCount()-1))
+                        {
+                            output.format("%s", " ");
+                        }
+                    }
+                    if(i<( modelo.getRowCount() -1))
+                    {
+                        output.format("%c",'\n');
+                    }
+                }
+                output.close();
+            }            
+        }catch(Exception ex){}
+    }//GEN-LAST:event_btnFecharActionPerformed
+
+    private void cbMesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbMesaActionPerformed
+        
+        DefaultTableModel modelo = (DefaultTableModel) tblPedidos.getModel();            
+        modelo.setRowCount(0);
+        pago =0;
+        pagar = 0;
+        try {            
+            String mesa = (String) cbMesa.getSelectedItem();
+            File file = new File(mesa);
+            Scanner input = new Scanner(file);
+            
+            while(input.hasNext())
+            {
+                
+                String nome = input.next();
+                int qtd = input.nextInt();
+                String valor = input.next();
+                String inicio = input.next();
+                String fim = input.next();
+                String estado = input.next();
+                if(estado.equals("aberto"))
+                {
+                    pagar = pagar + Double.parseDouble(valor) * qtd;
+                }
+                else
+                {
+                    pago = pago + Double.parseDouble(valor) * qtd;
+                }
+                
+                modelo.addRow(new Object[]{nome,qtd,valor,inicio,fim,estado});
+            }
+            lblPagar.setText(pagar + "");
+            lblPago.setText(pago + "");
+            input.close();
+        } catch (FileNotFoundException ex) {}
+    }//GEN-LAST:event_cbMesaActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        // TODO add your handling code here:
+
+        try
+        {
+
+            String mesa = (String) cbMesa.getSelectedItem();
+            DefaultTableModel modelo = (DefaultTableModel)tblPedidos.getModel();
+            
+            String estado = (String)modelo.getValueAt(tblPedidos.getSelectedRow(), 5);
+            
+            if( estado.equals("aberto") )
+            {
+                int quantidade = Integer.parseInt( modelo.getValueAt( tblPedidos.getSelectedRow(), 1)+"");
+                
+                double valor =Double.parseDouble(  modelo.getValueAt( tblPedidos.getSelectedRow(), 2)+"");
+                
+                pagar-= (valor);
+                lblPagar.setText(pagar + "");
+                
+                if(quantidade <= 1)
+                {
+
+                    modelo.removeRow(tblPedidos.getSelectedRow());
+                }
+                else
+                {
+                    modelo.setValueAt(quantidade -1 , tblPedidos.getSelectedRow(), 1);
+                }
+                
+                Formatter output = new Formatter(mesa);
+                for (int i = 0; i < modelo.getRowCount(); i++)
+                {
+                    for (int j = 0; j < modelo.getColumnCount(); j++) {
+
+                        output.format("%s", modelo.getValueAt(i, j));
+
+                        if(j<(modelo.getColumnCount()-1))
+                        {
+                            output.format("%s", " ");
+                        }
+                    }
+                    if(i<( modelo.getRowCount() -1))
+                    {
+                        output.format("%c",'\n');
+                    }
+                }
+                output.close();
+            }            
+        }catch(Exception ex){}
+    }//GEN-LAST:event_btnRemoverActionPerformed
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InterfaceAtendente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InterfaceAtendente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InterfaceAtendente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InterfaceAtendente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new InterfaceAtendente().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnRemover;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> cbMesa;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblPagar;
+    private javax.swing.JLabel lblPago;
     private javax.swing.JTable tblPedidos;
     // End of variables declaration//GEN-END:variables
 }
