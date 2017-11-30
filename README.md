@@ -30,3 +30,20 @@ e, caso seja o primeiro objeto da transação, ele também seta o valor da vari�
  "inicio" para o horário atual do sistema. finalizar reseta o valor das variá-
 veis "inicio" e "valor", limpa a tabela de objetos comprados  e, como também, 
 demonstra o horário em que o atendimento foi finalizado.
+    Uma interface para o atendente foi adicionada, nela o atendente pode fechar
+os pedidos e remover items dos pedidos que ainda estão abertos, uma interface 
+para fazer a seleção entre interface atendente e interface cliente também foi 
+adicionada.
+    A persistência dos dados está em todas as interfaces, na janelaTrabalho o 
+actionlistener do botão finalizar salva os pedidos da mesa no arquivo de mesmo
+número, na selecionaInterface, o actionlistener do botão "adicionar mesa" aumen-
+ta a quantidade de mesas no arquivo mesas e o botão "remover mesa" diminui. Na 
+"interfaceAtendente", o actionlistener do combobox das mesas faz o upload dos
+pedidos da mesa de acordo com qual mesa está selecionada, ele pega o valor sele-
+cionado do combobox e abri o arquivo com nome igual ao valor, os outros botões
+(fechar e remover) realizam a mesma operação de persistência, que é sobrescrever
+ os dados do arquivo, com nome igual ao valor selecionado no combobox e, com os
+dados da tabela. 
+
+Aluno:João Pedro de Souza Jardim da Costa matrícula: 201576044
+ Curso: Sistemas de Informação
